@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework import generics as api_views
+from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework import views as rest_base_views
 
@@ -34,7 +35,10 @@ class DetailsCompanyApiView(rest_base_views.APIView):
 
     def post(self, request, pk):
         company = get_company(pk)
-        serializer = CompanySerializer(company, data=request.data)
+        # file = request.data.get('logo')
+        # if file:
+        #     company.logo = file
+        serializer = CompanySerializer(company, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -43,5 +47,4 @@ class DetailsCompanyApiView(rest_base_views.APIView):
     def delete(self, request, pk):
         company = get_company(pk)
         company.delete()
-        return Response(status=status.HTTP_201_CREATED)
-
+        return Response(status=status.HTTP_204_NO_CONTENT)

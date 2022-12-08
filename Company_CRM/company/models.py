@@ -9,6 +9,7 @@ class Company(models.Model):
 
     name = models.CharField(
         max_length=NAME_MAX_LENGTH,
+        unique=True,
     )
 
     logo = models.ImageField(

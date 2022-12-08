@@ -1,3 +1,4 @@
+from django import forms
 from rest_framework import serializers
 
 from Company_CRM.company.models import Company
@@ -18,6 +19,9 @@ class ShortEmployeeSerializer(serializers.ModelSerializer):
 
 class EmployeeSerializer(serializers.ModelSerializer):
     company = ShortCompanySerializer()
+    photo = serializers.ImageField(
+        required=False,
+        use_url=True)
 
     class Meta:
         model = Employee
@@ -25,16 +29,15 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         company_name = validated_data.pop('company').get('name')
-        print(company_name)
         try:
             company = Company.objects.filter(name=company_name).get()
         except Company.DoesNotExist:
             company = Company.objects.create(name=company_name)
         return Employee.objects.create(**validated_data, company=company)
 
+
     def update(self, instance, validated_data):
         company_name = validated_data.pop('company').get('name')
-        print(company_name)
         try:
             company = Company.objects.filter(name=company_name).get()
         except Company.DoesNotExist:
@@ -44,6 +47,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 class CompanySerializer(serializers.ModelSerializer):
     employee_set = ShortEmployeeSerializer(many=True, read_only=True)
+    logo = serializers.ImageField(
+        required=False,
+        use_url=True)
 
     class Meta:
         model = Company

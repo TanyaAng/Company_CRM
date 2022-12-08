@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from Company_CRM.company.models import Company
 
 
@@ -9,4 +11,4 @@ def get_company(pk):
     company = Company.objects.filter(id=pk)
     if company:
         return company.get()
-    return None
+    raise Http404

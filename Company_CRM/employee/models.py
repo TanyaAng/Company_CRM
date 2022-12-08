@@ -53,7 +53,7 @@ class Employee(models.Model):
         blank=False,
     )
 
-    company = models.ForeignKey(to=Company, on_delete=models.RESTRICT)
+    company = models.ForeignKey(to=Company, on_delete=models.CASCADE)
 
     @property
     def full_name(self):
