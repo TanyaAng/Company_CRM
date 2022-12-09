@@ -12,7 +12,7 @@ class ListEmployeeApiView(api_views.ListCreateAPIView):
     serializer_class = EmployeeSerializer
 
 
-# class ListEmployeeApiView(APIView):
+# class ListEmployeeApiView(rest_base_views.APIView):
 #     def get(self, request):
 #         employees = get_all_employees()
 #         serializer = EmployeeSerializer(employees)

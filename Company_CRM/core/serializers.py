@@ -2,6 +2,8 @@ from django import forms
 from rest_framework import serializers
 
 from Company_CRM.company.models import Company
+from Company_CRM.core.repository.company_repository import get_company_by_name, check_if_company_exist_by_name
+from Company_CRM.core.validators.serializers_validators import get_or_create_company_by_name
 from Company_CRM.employee.models import Employee
 
 
@@ -27,21 +29,24 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = '__all__'
 
+    def is_valid(self, *args, **kwargs):
+        company_name = self.initial_data.get('company.name')
+        if company_name:
+            get_or_create_company_by_name(company_name)
+        return super().is_valid(*args, **kwargs)
+
     def create(self, validated_data):
         company_name = validated_data.pop('company').get('name')
-        try:
-            company = Company.objects.filter(name=company_name).get()
-        except Company.DoesNotExist:
-            company = Company.objects.create(name=company_name)
+        company = get_company_by_name(company_name)
         return Employee.objects.create(**validated_data, company=company)
 
-
     def update(self, instance, validated_data):
-        company_name = validated_data.pop('company').get('name')
-        try:
-            company = Company.objects.filter(name=company_name).get()
-        except Company.DoesNotExist:
-            company = Company.objects.create(name=company_name)
+        company = validated_data.get('company')
+        if company:
+            company_name = validated_data.pop('company').get('name')
+            company = get_company_by_name(company_name)
+        else:
+            company = instance.company
         return Employee.objects.create(**validated_data, company=company)
 
 
@@ -55,5 +60,7 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
-    # def create(self, validated_data):
-    #     return super().create(validated_data)
+    def is_valid(self, *args, **kwargs):
+        company_name = self.initial_data.get('name')
+        check_if_company_exist_by_name(company_name)
+        return super().is_valid(*args, **kwargs)

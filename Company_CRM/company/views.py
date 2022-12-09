@@ -35,9 +35,6 @@ class DetailsCompanyApiView(rest_base_views.APIView):
 
     def post(self, request, pk):
         company = get_company(pk)
-        # file = request.data.get('logo')
-        # if file:
-        #     company.logo = file
         serializer = CompanySerializer(company, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
