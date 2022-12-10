@@ -60,7 +60,8 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
-    def is_valid(self, *args, **kwargs):
-        company_name = self.initial_data.get('name')
-        check_if_company_exist_by_name(company_name)
-        return super().is_valid(*args, **kwargs)
+    def create(self, validated_data):
+        company_name = validated_data.get('name')
+        if check_if_company_exist_by_name(company_name):
+            raise serializers.ValidationError('Company with this name already exists.')
+        return Company.objects.create(**validated_data)

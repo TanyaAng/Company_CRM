@@ -25,4 +25,6 @@ def create_company_with_name(name):
 
 def check_if_company_exist_by_name(name):
     if Company.objects.filter(name=name):
-        raise serializers.ValidationError('Company with this name already exists.')
+        return True
+    return False
+
