@@ -44,10 +44,11 @@ class EmployeeSerializer(serializers.ModelSerializer):
         company = validated_data.get('company')
         if company:
             company_name = validated_data.pop('company').get('name')
-            company = get_company_by_name(company_name)
-        else:
-            company = instance.company
-        return Employee.objects.create(**validated_data, company=company)
+            instance.company = get_company_by_name(company_name)
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance
 
 
 class CompanySerializer(serializers.ModelSerializer):
