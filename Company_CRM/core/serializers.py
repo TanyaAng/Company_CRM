@@ -30,8 +30,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def is_valid(self, *args, **kwargs):
-        company_name = self.initial_data.get('company.name')
-        if company_name:
+        print(self.initial_data)
+        company = self.initial_data.get('company')
+        if company:
+            company_name = company.get('name')
             get_or_create_company_by_name(company_name)
         return super().is_valid(*args, **kwargs)
 
@@ -41,12 +43,17 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return Employee.objects.create(**validated_data, company=company)
 
     def update(self, instance, validated_data):
+        print(validated_data)
         company = validated_data.get('company')
+
         if company:
             company_name = validated_data.pop('company').get('name')
             instance.company = get_company_by_name(company_name)
+
+
         for key, value in validated_data.items():
-            setattr(instance, key, value)
+            if key != 'company' and value:
+                setattr(instance, key, value)
         instance.save()
         return instance
 
