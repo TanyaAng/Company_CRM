@@ -25,9 +25,9 @@
 
 ### About The Project
   JSON REST API application for Company CRM system:
- - allows CRUD operations to a company entites;
- - allows CRUD operations to a employee entites;
- - employees and companies has One-to-Many relationship;
+ - allows CRUD operations to company entities;
+ - allows CRUD operations to employee entities;
+ - employees and companies have One-to-Many relationship;
  - provided unittests for models validations;
  - provided integration tests for API views;
   
