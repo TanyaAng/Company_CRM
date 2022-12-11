@@ -23,31 +23,31 @@ class CompanyViewTests(TestCase):
             "name": "Microsoft"
         }
 
-    def get_all_listed_companies(self):
+    def test_get_all_listed_companies__expect_successful(self):
         response = client.get(reverse('api list company'))
         companies = Company.objects.all()
         serializer = CompanySerializer(companies, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def create_invalid_company_entity(self):
+    def test_create_company__when_invalid_entity__expect_status_bad_request(self):
         response = client.post(reverse('api list company'),
                                data=json.dumps(self.invalid_company),
                                content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def get_valid_company_entity(self):
+    def test_get_company__when_valid_entity__expect_correct_data(self):
         response = client.get(reverse('api details company', kwargs={'pk': 1}))
         company = Company.objects.get(pk=1)
         serializer = CompanySerializer(company)
         self.assertEqual(response.data,
                          serializer.data)
 
-    def get_invalid_company_entity(self):
+    def test_get_company__when_invalid_entity__expect_not_found(self):
         response = client.get(reverse('api details company', kwargs={'pk': 30}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def update_valid_company_entity(self):
+    def test_update_company__when_valid_entity__expect_to_be_created(self):
         response = client.post(reverse('api details company', kwargs={'pk': 1}),
                                data=json.dumps(self.valid_company),
                                content_type='application/json')

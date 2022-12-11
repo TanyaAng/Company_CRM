@@ -41,24 +41,24 @@ class EmployeeViewTests(TestCase):
             "salary": 1800,
         }
 
-    def get_all_listed_employees(self):
+    def test_get_all_listed_employees__expect_to_be_successful(self):
         response = client.get(reverse('api list employee'))
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def get_valid_employee_entity(self):
+    def test_get_employee__when_valid_entity__expect_to_be_successful(self):
         response = client.get(reverse('api details employee', kwargs={'pk': 1}))
         employee = Employee.objects.get(pk=1)
         serializer = EmployeeSerializer(employee)
         self.assertEqual(response.data, serializer.data)
 
-    def get_invalid_employee_entity(self):
+    def test_get_employee__when_invalid_entity__expect_not_found(self):
         response = client.get(reverse('api details employee', kwargs={'pk': 30}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def create_valid_employee_entity(self):
+    def test_create_employee__when_valid_entity__expect_to_be_created(self):
         response = client.post(
             reverse('api details employee', kwargs={'pk': 1}),
             data=json.dumps(self.valid_employee),
@@ -66,7 +66,7 @@ class EmployeeViewTests(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def create_invalid_employee_entity(self):
+    def test_create_employee__when_invalid_entity__expect_bad_request(self):
         response = client.post(
             reverse('api details employee', kwargs={'pk': 1}),
             data=json.dumps(self.invalid_employee),
