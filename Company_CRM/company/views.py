@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework import generics as api_views
-from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework import views as rest_base_views
 
@@ -33,7 +32,7 @@ class DetailsCompanyApiView(rest_base_views.APIView):
         serializer = CompanySerializer(company)
         return Response(data=serializer.data)
 
-    def post(self, request, pk):
+    def put(self, request, pk):
         company = get_company(pk)
         serializer = CompanySerializer(company, data=request.data, partial=True)
         if serializer.is_valid():

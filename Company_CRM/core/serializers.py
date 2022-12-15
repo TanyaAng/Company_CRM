@@ -30,7 +30,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def is_valid(self, *args, **kwargs):
-        print(self.initial_data)
         company = self.initial_data.get('company')
         if company:
             company_name = company.get('name')
@@ -43,9 +42,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return Employee.objects.create(**validated_data, company=company)
 
     def update(self, instance, validated_data):
-        print(validated_data)
         company = validated_data.get('company')
-
         if company:
             company_name = validated_data.pop('company').get('name')
             instance.company = get_company_by_name(company_name)

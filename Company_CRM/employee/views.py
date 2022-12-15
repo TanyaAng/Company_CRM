@@ -32,7 +32,7 @@ class DetailsEmployeeApiView(rest_base_views.APIView):
         serializer = EmployeeSerializer(employee)
         return Response(data=serializer.data)
 
-    def post(self, request, pk):
+    def put(self, request, pk):
         employee = get_employee(pk)
         serializer = EmployeeSerializer(employee, data=request.data, partial=True)
         if serializer.is_valid():
