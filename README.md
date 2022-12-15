@@ -73,12 +73,12 @@
 | /api/company/               | GET         | get all companies          |
 | /api/company                | POST        | create new company entity  |
 | /api/company/{company_id}   | GET         | get single company         |
-| /api/company/{company_id}   | POST        | update single company      |
+| /api/company/{company_id}   | PUT         | update single company      |
 | /api/company/{company_id}   | DELETE      | delete single company      |
 | /api/employee/              | GET         | get all companies          |
 | /api/employee               | POST        | create new employee entity |
 | /api/employee/{employee_id} | GET         | get single employee        |
-| /api/employee/{employee_id} | POST        | update single employee     |
+| /api/employee/{employee_id} | PUT         | update single employee     |
 | /api/employee/{employee_id} | DELETE      | delete single employee     |
 
 
