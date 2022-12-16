@@ -59,7 +59,7 @@ class EmployeeViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_employee__when_valid_entity__expect_to_be_created(self):
-        response = client.post(
+        response = client.put(
             reverse('api details employee', kwargs={'pk': 1}),
             data=json.dumps(self.valid_employee),
             content_type='application/json'
@@ -67,7 +67,7 @@ class EmployeeViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_employee__when_invalid_entity__expect_bad_request(self):
-        response = client.post(
+        response = client.put(
             reverse('api details employee', kwargs={'pk': 1}),
             data=json.dumps(self.invalid_employee),
             content_type='application/json'

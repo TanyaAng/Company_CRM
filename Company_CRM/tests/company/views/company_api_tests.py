@@ -48,7 +48,7 @@ class CompanyViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_company__when_valid_entity__expect_to_be_created(self):
-        response = client.post(reverse('api details company', kwargs={'pk': 1}),
+        response = client.put(reverse('api details company', kwargs={'pk': 1}),
                                data=json.dumps(self.valid_company),
                                content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

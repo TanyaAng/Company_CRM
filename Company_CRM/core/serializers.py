@@ -46,8 +46,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
         if company:
             company_name = validated_data.pop('company').get('name')
             instance.company = get_company_by_name(company_name)
-
-
         for key, value in validated_data.items():
             if key != 'company' and value:
                 setattr(instance, key, value)
